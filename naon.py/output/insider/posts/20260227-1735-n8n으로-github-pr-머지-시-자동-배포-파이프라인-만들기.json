@@ -1,0 +1,55 @@
+{
+  "title": "n8n으로 GitHub PR 머지 시 자동 배포 파이프라인 만들기",
+  "source_url": null,
+  "source_site": "Automation Weekly",
+  "published_at": "2026-02-27T08:35:11.535Z",
+  "score_total": 74,
+  "score_breakdown": {
+    "practical": 20,
+    "trust": 17,
+    "recency": 20,
+    "vibe_fit": 12,
+    "shorts_quality": 4.6,
+    "shorts_detail": {
+      "rhythm": 1,
+      "hookStrength": 0.6,
+      "fitScore": 2.5,
+      "colloquial": 0.5
+    }
+  },
+  "tags": [
+    "n8n",
+    "github-actions",
+    "pm2",
+    "ai"
+  ],
+  "shorts_script": "**[Hook – 3초]**\n\"이거 모르면 진짜 손해예요.\"\n\n**[공감 – 5초]**\n\"n8n에서 Webhook 노드 생성 (POST)… 매번 검색하다 지치지 않았나요?\"\n\n**[핵심 – 20초]**\n\"방법은 간단합니다.\n1. n8n에서 Webhook 노드 생성 (POST)\n2. GitHub 리포지토리 Settings → Webhooks에서 위 URL 등록\n3. n8n에서 SSH 노드 추가: git pull && npm run build && pm2 restart\n이게 끝이에요. 진짜로.\"\n\n**[실전 예시 – 10초]**\n\"실제로 해보면요—\nn8n에서 Webhook 노드 생성 (POST) 하나 세팅하고,\n바로 확인 가능합니다.\"\n\n**[마무리 – 5초]**\n\"이런 실전 팁, 매일 올라옵니다.\nAI Insider 확인해보세요. 🔥\"",
+  "shorts_eligible": false,
+  "checklist": [
+    "n8n에서 Webhook 노드 생성 (POST)",
+    "GitHub 리포지토리 Settings → Webhooks에서 위 URL 등록",
+    "n8n에서 SSH 노드 추가: git pull && npm run build && pm2 restart",
+    "테스트 PR 머지 후 배포 확인"
+  ],
+  "source": {
+    "name": "Automation Weekly",
+    "date": "2026. 2. 26."
+  },
+  "level": "intermediate",
+  "topic": "automation",
+  "apply_to": [
+    "반복 작업 자동화",
+    "n8n 워크플로우 구성"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [
+      "n8n에서 Webhook 노드 생성 (POST)",
+      "GitHub 리포지토리 Settings → Webhooks에서 위 URL 등록",
+      "n8n에서 SSH 노드 추가: git pull && npm run build && pm2 restart",
+      "테스트 PR 머지 후 배포 확인"
+    ],
+    "templates": [],
+    "commands": []
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "title": "Tailwind v4 마이그레이션 체크리스트: 5가지 핵심 변경점",
+  "source_url": null,
+  "source_site": "DevTools Weekly",
+  "published_at": "2026-02-27T08:35:11.534Z",
+  "score_total": 72,
+  "score_breakdown": {
+    "practical": 30,
+    "trust": 13,
+    "recency": 20,
+    "vibe_fit": 4,
+    "shorts_quality": 5.4,
+    "shorts_detail": {
+      "rhythm": 1,
+      "hookStrength": 1.4,
+      "fitScore": 2.5,
+      "colloquial": 0.5
+    }
+  },
+  "tags": [
+    "tailwind",
+    "vite",
+    "ai"
+  ],
+  "shorts_script": "**[Hook – 3초]**\n\"이거 모르면 진짜 손해예요.\"\n\n**[공감 – 5초]**\n\"@config 지시자가 @import 기반으로 변경… 매번 검색하다 지치지 않았나요?\"\n\n**[핵심 – 20초]**\n\"방법은 간단합니다.\n1. @config 지시자가 @import 기반으로 변경\n2. 색상 시스템이 OKLCH 기반으로 전환\n3. 플러그인 API가 CSS-first로 변경\n이게 끝이에요. 진짜로.\"\n\n**[실전 예시 – 10초]**\n\"실제로 해보면요—\n@config 지시자가 @import 기반으로 변경 하나 세팅하고,\n바로 확인 가능합니다.\"\n\n**[마무리 – 5초]**\n\"이런 실전 팁, 매일 올라옵니다.\nAI Insider 확인해보세요. 🔥\"",
+  "shorts_eligible": false,
+  "checklist": [
+    "@config 지시자가 @import 기반으로 변경",
+    "색상 시스템이 OKLCH 기반으로 전환",
+    "플러그인 API가 CSS-first로 변경",
+    "content 설정이 자동 감지로 전환",
+    "darkMode 설정 방식 변경",
+    "npx @tailwindcss/upgrade 실행",
+    "tailwind.config.js → CSS @theme으로 이전",
+    "커스텀 플러그인 있으면 CSS 방식으로 재작성"
+  ],
+  "source": {
+    "name": "DevTools Weekly",
+    "date": "2026. 2. 26."
+  },
+  "level": "intermediate",
+  "topic": "tooling",
+  "apply_to": [
+    "AI 코딩 워크플로우 최적화",
+    "개인 개발 생산성 향상",
+    "팀 온보딩 문서화"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [
+      "@config 지시자가 @import 기반으로 변경",
+      "색상 시스템이 OKLCH 기반으로 전환",
+      "플러그인 API가 CSS-first로 변경",
+      "content 설정이 자동 감지로 전환",
+      "darkMode 설정 방식 변경",
+      "npx @tailwindcss/upgrade 실행",
+      "tailwind.config.js → CSS @theme으로 이전",
+      "커스텀 플러그인 있으면 CSS 방식으로 재작성"
+    ],
+    "templates": [],
+    "commands": []
+  }
+}

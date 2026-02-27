@@ -1,0 +1,305 @@
+{
+  "timestamp": "2026-02-27T09:10:11.041Z",
+  "reason": "compaction",
+  "status": {
+    "version": "2.0",
+    "lastUpdated": "2026-02-27T09:06:13.331Z",
+    "activeFeatures": [
+      "ui-dashboard-v1",
+      "AI-Insidier",
+      "naon.py",
+      "data",
+      "widgets",
+      "publisher",
+      "scoring",
+      "tools"
+    ],
+    "primaryFeature": "ui-dashboard-v1",
+    "features": {
+      "ui-dashboard-v1": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T02:14:30.231Z",
+          "lastUpdated": "2026-02-27T09:05:44.088Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/ui-dashboard-v1/src/pages/AIBoard.tsx"
+      },
+      "AI-Insidier": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T02:31:49.659Z",
+          "lastUpdated": "2026-02-27T02:31:49.659Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/AI-Insidier/run-ai-board.sh"
+      },
+      "naon.py": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T02:31:53.523Z",
+          "lastUpdated": "2026-02-27T02:31:53.523Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/naon.py/verify.sh"
+      },
+      "data": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T02:55:21.320Z",
+          "lastUpdated": "2026-02-27T02:55:21.320Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/ui-dashboard-v1/src/data/mockData.ts"
+      },
+      "widgets": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T02:56:51.581Z",
+          "lastUpdated": "2026-02-27T02:58:40.807Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/ui-dashboard-v1/src/components/widgets/TodayDocuments.tsx"
+      },
+      "publisher": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T08:45:49.701Z",
+          "lastUpdated": "2026-02-27T09:03:39.032Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/insider/publisher/publisher.js"
+      },
+      "scoring": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T08:46:20.396Z",
+          "lastUpdated": "2026-02-27T09:04:09.694Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/insider/scoring/scorer.js"
+      },
+      "tools": {
+        "phase": "do",
+        "phaseNumber": 3,
+        "matchRate": null,
+        "iterationCount": 0,
+        "requirements": [],
+        "documents": {},
+        "timestamps": {
+          "started": "2026-02-27T08:48:20.674Z",
+          "lastUpdated": "2026-02-27T09:06:13.331Z"
+        },
+        "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/insider/tools/migrate_fix_source.js"
+      }
+    },
+    "pipeline": {
+      "currentPhase": 1,
+      "level": "Dynamic",
+      "phaseHistory": []
+    },
+    "session": {
+      "startedAt": "2026-02-27T01:49:44.343Z",
+      "onboardingCompleted": false,
+      "lastActivity": "2026-02-27T09:06:13.331Z"
+    },
+    "history": [
+      {
+        "timestamp": "2026-02-27T02:14:30.231Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:31:49.659Z",
+        "feature": "AI-Insidier",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:31:53.523Z",
+        "feature": "naon.py",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:54:44.923Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:55:21.320Z",
+        "feature": "data",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:56:06.117Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:56:35.551Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:56:51.581Z",
+        "feature": "widgets",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:57:07.493Z",
+        "feature": "widgets",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:57:22.330Z",
+        "feature": "widgets",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:57:40.076Z",
+        "feature": "widgets",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:58:03.813Z",
+        "feature": "widgets",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T02:58:40.807Z",
+        "feature": "widgets",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:15:43.122Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:15:46.087Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:15:49.259Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:15:54.783Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:16:08.962Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:16:27.878Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:16:33.765Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:45:49.701Z",
+        "feature": "publisher",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:46:20.396Z",
+        "feature": "scoring",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:47:35.180Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T08:48:20.674Z",
+        "feature": "tools",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T09:03:39.032Z",
+        "feature": "publisher",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T09:04:09.694Z",
+        "feature": "scoring",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T09:05:44.088Z",
+        "feature": "ui-dashboard-v1",
+        "phase": "do",
+        "action": "updated"
+      },
+      {
+        "timestamp": "2026-02-27T09:06:13.331Z",
+        "feature": "tools",
+        "phase": "do",
+        "action": "updated"
+      }
+    ]
+  }
+}

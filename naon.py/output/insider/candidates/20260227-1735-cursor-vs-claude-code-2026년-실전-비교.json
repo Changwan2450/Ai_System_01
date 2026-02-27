@@ -1,0 +1,40 @@
+{
+  "title": "Cursor vs Claude Code: 2026년 실전 비교",
+  "source_url": null,
+  "source_site": "DevTools Weekly",
+  "published_at": "2026-02-22T08:35:11.525Z",
+  "score_total": 68,
+  "score_breakdown": {
+    "practical": 10,
+    "trust": 17,
+    "recency": 20,
+    "vibe_fit": 16,
+    "shorts_quality": 5.1,
+    "shorts_detail": {
+      "rhythm": 1,
+      "hookStrength": 1.1,
+      "fitScore": 2.5,
+      "colloquial": 0.5
+    }
+  },
+  "tags": [
+    "claude-code",
+    "cursor",
+    "automation",
+    "ai"
+  ],
+  "_adapter": "claude-code-news",
+  "level": "beginner",
+  "topic": "tooling",
+  "apply_to": [
+    "AI 코딩 워크플로우 최적화",
+    "개인 개발 생산성 향상",
+    "팀 온보딩 문서화"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [],
+    "templates": [],
+    "commands": []
+  }
+}

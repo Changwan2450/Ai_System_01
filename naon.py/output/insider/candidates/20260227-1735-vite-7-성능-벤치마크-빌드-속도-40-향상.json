@@ -1,0 +1,36 @@
+{
+  "title": "Vite 7 성능 벤치마크: 빌드 속도 40% 향상",
+  "source_url": null,
+  "source_site": "Frontend Focus",
+  "published_at": "2026-02-24T08:35:11.525Z",
+  "score_total": 62,
+  "score_breakdown": {
+    "practical": 25,
+    "trust": 13,
+    "recency": 20,
+    "vibe_fit": 0,
+    "shorts_quality": 4,
+    "shorts_detail": {
+      "rhythm": 0.5,
+      "hookStrength": 0.5,
+      "fitScore": 2.5,
+      "colloquial": 0.5
+    }
+  },
+  "tags": [
+    "vite"
+  ],
+  "_adapter": "devtools-weekly",
+  "level": "beginner",
+  "topic": "tooling",
+  "apply_to": [
+    "개인 개발 생산성 향상",
+    "팀 온보딩 문서화"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [],
+    "templates": [],
+    "commands": []
+  }
+}

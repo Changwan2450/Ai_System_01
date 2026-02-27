@@ -1,0 +1,48 @@
+{
+  "title": "n8n으로 GitHub PR 머지 시 자동 배포 파이프라인 만들기",
+  "source_url": null,
+  "source_site": "Automation Weekly",
+  "published_at": "2026-02-27T05:56:16.788Z",
+  "score_total": 85,
+  "score_breakdown": {
+    "practical": 28,
+    "trust": 17,
+    "recency": 20,
+    "vibe_fit": 12,
+    "shorts": 8
+  },
+  "tags": [
+    "n8n",
+    "github-actions",
+    "pm2",
+    "ai"
+  ],
+  "shorts_script": "**[훅 – 3초]**\n\"n8n으로 GitHub PR 머지 시 자동 배포 파이프라인 만들기... 3단계면 끝입니다.\"\n\n**[핵심 – 20초]**\n\"n8n에서 Webhook 노드 생성 (POST) → GitHub 리포지토리 Settings → Webhooks에서 위 URL 등록 → n8n에서 SSH 노드 추가: git pull && npm run build && pm2 restart\"\n\n**[예시 – 10초]**\n\"실제로 해보면… n8n에서 Webhook 노드 생성 (POST)\"\n\n**[마무리 – 5초]**\n\"더 자세한 내용은 AI Insider에서 확인하세요.\"",
+  "checklist": [
+    "n8n에서 Webhook 노드 생성 (POST)",
+    "GitHub 리포지토리 Settings → Webhooks에서 위 URL 등록",
+    "n8n에서 SSH 노드 추가: git pull && npm run build && pm2 restart",
+    "테스트 PR 머지 후 배포 확인"
+  ],
+  "source": {
+    "name": "Automation Weekly",
+    "date": "2026. 2. 26."
+  },
+  "level": "intermediate",
+  "topic": "automation",
+  "apply_to": [
+    "반복 작업 자동화",
+    "n8n 워크플로우 구성"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [
+      "n8n에서 Webhook 노드 생성 (POST)",
+      "GitHub 리포지토리 Settings → Webhooks에서 위 URL 등록",
+      "n8n에서 SSH 노드 추가: git pull && npm run build && pm2 restart",
+      "테스트 PR 머지 후 배포 확인"
+    ],
+    "templates": [],
+    "commands": []
+  }
+}

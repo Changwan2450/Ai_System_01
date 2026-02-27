@@ -1,0 +1,47 @@
+{
+  "title": "Cursor vs Claude Code: 2026년 실전 비교",
+  "source_url": null,
+  "source_site": "DevTools Weekly",
+  "published_at": "2026-02-27T05:56:16.787Z",
+  "score_total": 79,
+  "score_breakdown": {
+    "practical": 18,
+    "trust": 17,
+    "recency": 20,
+    "vibe_fit": 16,
+    "shorts": 8
+  },
+  "tags": [
+    "claude-code",
+    "cursor",
+    "automation",
+    "ai"
+  ],
+  "shorts_script": "**[훅 – 3초]**\n\"Cursor vs Claude Code: 2026년 실전 비교... 3단계면 끝입니다.\"\n\n**[핵심 – 20초]**\n\"빠른 코드 작성 → Cursor 추천 → 파일 여러 개 동시 편집 → Claude Code 추천 → 팀 협업 → Cursor (IDE 공유 편의)\"\n\n**[예시 – 10초]**\n\"실제로 해보면… 빠른 코드 작성 → Cursor 추천\"\n\n**[마무리 – 5초]**\n\"더 자세한 내용은 AI Insider에서 확인하세요.\"",
+  "checklist": [
+    "빠른 코드 작성 → Cursor 추천",
+    "파일 여러 개 동시 편집 → Claude Code 추천",
+    "팀 협업 → Cursor (IDE 공유 편의)"
+  ],
+  "source": {
+    "name": "DevTools Weekly",
+    "date": "2026. 2. 22."
+  },
+  "level": "intermediate",
+  "topic": "tooling",
+  "apply_to": [
+    "AI 코딩 워크플로우 최적화",
+    "개인 개발 생산성 향상",
+    "팀 온보딩 문서화"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [
+      "빠른 코드 작성 → Cursor 추천",
+      "파일 여러 개 동시 편집 → Claude Code 추천",
+      "팀 협업 → Cursor (IDE 공유 편의)"
+    ],
+    "templates": [],
+    "commands": []
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "title": "PM2 모니터링 대시보드 5분 만에 세팅하기",
+  "source_url": null,
+  "source_site": "DevOps Tips",
+  "published_at": "2026-02-17T05:56:16.776Z",
+  "score_total": 55,
+  "score_breakdown": {
+    "practical": 28,
+    "trust": 13,
+    "recency": 12,
+    "vibe_fit": 0,
+    "shorts": 2
+  },
+  "tags": [
+    "pm2"
+  ],
+  "_adapter": "automation-blog",
+  "level": "beginner",
+  "topic": "tooling",
+  "apply_to": [
+    "개인 개발 생산성 향상",
+    "팀 온보딩 문서화"
+  ],
+  "artifacts": {
+    "snippets": [],
+    "checklist": [],
+    "templates": [],
+    "commands": []
+  }
+}
