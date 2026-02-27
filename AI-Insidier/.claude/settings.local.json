@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(./gradlew bootRun:*)",
+      "Bash(open:*)",
+      "Bash(./gradlew compileJava:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(kill:*)"
+    ]
+  }
+}

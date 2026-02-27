@@ -1,0 +1,58 @@
+# ===================================
+# Python Shorts Factory 필수 패키지
+# edge-tts 무료 버전 (90% 성공률)
+# ===================================
+
+# 환경 변수 관리
+python-dotenv==1.0.0
+
+# 웹 크롤링
+requests==2.31.0
+beautifulsoup4==4.12.2
+lxml==4.9.3
+aiohttp==3.9.1
+
+# DB 연동
+sqlalchemy==2.0.23
+oracledb==2.0.1
+psycopg2-binary==2.9.9
+pandas==2.1.4
+
+# AI 및 NLP
+sentence-transformers>=2.7.0
+torch
+transformers==4.36.0
+
+# 감성 분석
+vaderSentiment==3.3.2
+
+# 음성 합성 (무료!)
+edge-tts==6.1.9
+gtts>=2.5.0
+
+# 영상 편집
+moviepy==2.0.0.dev2
+Pillow==10.1.0
+imageio==2.33.1
+imageio-ffmpeg==0.4.9
+
+# 이미지 검색
+duckduckgo-search==3.9.6
+
+# SNS API
+tweepy==4.14.0
+
+# YouTube API
+google-auth-oauthlib==1.2.0
+google-api-python-client==2.108.0
+
+# Flask API
+Flask==3.0.0
+Flask-CORS==4.0.0
+
+# 시간대 관리
+pytz==2023.3
+
+# 유틸리티
+python-dateutil==2.8.2
+numpy==1.26.2

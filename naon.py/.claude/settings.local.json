@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip show:*)",
+      "Bash(pip install:*)",
+      "Bash(python api_server.py:*)",
+      "Bash(python -c:*)",
+      "Bash(brew install:*)",
+      "Bash(magick identify:*)",
+      "Bash(brew reinstall:*)",
+      "Bash(magick:*)",
+      "Bash(brew info:*)",
+      "Bash(/opt/homebrew/opt/imagemagick-full/bin/magick:*)",
+      "Bash(find:*)",
+      "Bash(test:*)",
+      "Bash(grep:*)",
+      "Bash(python3:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs:*)",
+      "Bash(kill:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

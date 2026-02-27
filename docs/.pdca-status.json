@@ -1,0 +1,81 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-02-27T02:31:53.523Z",
+  "activeFeatures": [
+    "ui-dashboard-v1",
+    "AI-Insidier",
+    "naon.py"
+  ],
+  "primaryFeature": "ui-dashboard-v1",
+  "features": {
+    "ui-dashboard-v1": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-27T02:14:30.231Z",
+        "lastUpdated": "2026-02-27T02:14:30.231Z"
+      },
+      "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/ui-dashboard-v1/vite.config.ts"
+    },
+    "AI-Insidier": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-27T02:31:49.659Z",
+        "lastUpdated": "2026-02-27T02:31:49.659Z"
+      },
+      "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/AI-Insidier/run-ai-board.sh"
+    },
+    "naon.py": {
+      "phase": "do",
+      "phaseNumber": 3,
+      "matchRate": null,
+      "iterationCount": 0,
+      "requirements": [],
+      "documents": {},
+      "timestamps": {
+        "started": "2026-02-27T02:31:53.523Z",
+        "lastUpdated": "2026-02-27T02:31:53.523Z"
+      },
+      "lastFile": "/Users/changwan2450/Antigravity WorkSpace/AI_SYSTEM/naon.py/verify.sh"
+    }
+  },
+  "pipeline": {
+    "currentPhase": 1,
+    "level": "Dynamic",
+    "phaseHistory": []
+  },
+  "session": {
+    "startedAt": "2026-02-27T01:49:44.343Z",
+    "onboardingCompleted": false,
+    "lastActivity": "2026-02-27T02:31:53.523Z"
+  },
+  "history": [
+    {
+      "timestamp": "2026-02-27T02:14:30.231Z",
+      "feature": "ui-dashboard-v1",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-27T02:31:49.659Z",
+      "feature": "AI-Insidier",
+      "phase": "do",
+      "action": "updated"
+    },
+    {
+      "timestamp": "2026-02-27T02:31:53.523Z",
+      "feature": "naon.py",
+      "phase": "do",
+      "action": "updated"
+    }
+  ]
+}

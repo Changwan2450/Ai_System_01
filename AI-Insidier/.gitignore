@@ -1,0 +1,54 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+# 1. 설정 파일 (가장 중요! 여기에 키 다 들어있음)
+src/main/resources/application.properties
+src/main/resources/application.yml
+
+# 2. 빌드 결과물 (용량만 차지함)
+target/
+*.jar
+*.war
+
+# 3. IDE 설정 (개인 설정이라 올릴 필요 없음)
+.idea/
+*.iml
+.vscode/
+
+# 4. OS 관련 찌꺼기
+.DS_Store

@@ -1,0 +1,434 @@
+package com.cw.aibot.service;
+
+import com.cw.aibot.DTO.JudgeResult;
+import com.cw.aibot.DTO.RawTopic;
+import com.cw.aibot.entity.Board;
+import com.cw.aibot.entity.Persona;
+import com.cw.aibot.repository.BoardRepository;
+import com.cw.aibot.repository.PersonaRepository;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class AiPostGenerationService {
+    private final AiService aiService;
+    private final PersonaRepository personaRepo;
+    private final BoardRepository boardRepo;
+    private final SimilarityService similarityService;
+    private final JdbcTemplate jdbcTemplate;
+    private final Random random = new Random();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Transactional
+    public Board generateShockingPost(RawTopic topic) {
+        List<Persona> personas = personaRepo.findAll();
+        if (personas.isEmpty()) return null;
+        Persona writer = personas.get(random.nextInt(personas.size()));
+
+        // ===== STEP 1: 본문 생성 (간결한 프롬프트) =====
+        String contentTask = String.format("""
+            너는 커뮤니티 고인물 콘텐츠 작가 %s다.
+            주제: %s
+            출처: %s
+
+            규칙:
+            - 커뮤니티 고인물 구어체로 500자 이상 작성
+            - "ㄹㅇ","실화냐","대박","경악","ㄷㄷ","헐" 사용금지
+            - 배경지식+사회적맥락+찬반시각 포함
+            - 마크다운(#,*,-) 금지
+
+            출력형식:
+            [TITLE]
+            제목
+            [CONTENT]
+            본문
+            """, writer.getName(), topic.getTitle(), topic.getLink());
+
+        String rawContent = aiService.askGpt("", writer.getPrompt(), contentTask);
+        if (rawContent == null || !rawContent.contains("[TITLE]") || !rawContent.contains("[CONTENT]")) {
+            log.warn("⚠️ 본문 생성 형식 오류, 재시도...");
+            rawContent = aiService.askGpt("", writer.getPrompt(),
+                    "반드시 [TITLE]과 [CONTENT] 태그를 포함해라.\n" + contentTask);
+            if (rawContent == null || !rawContent.contains("[TITLE]")) {
+                log.error("❌ 본문 생성 실패");
+                return null;
+            }
+        }
+
+        String title = extract(rawContent, "[TITLE]", "[CONTENT]").trim();
+        String content = extract(rawContent, "[CONTENT]", null).trim();
+
+        // 금지 표현 필터
+        if (containsBannedPhrases(title + " " + content)) {
+            log.warn("🚫 금지 표현 감지, 정제 중...");
+            content = cleanBannedPhrases(content);
+            title = cleanBannedPhrases(title);
+        }
+
+        // 컨텐츠 길이 검증
+        if (content.length() < 400) {
+            log.warn("⚠️ 컨텐츠 {}자, 보강 요청...", content.length());
+            String boosted = aiService.askGpt("", "",
+                    "다음 글을 500자 이상으로 확장해. 구어체 유지. 마크다운 금지.\n원문: " + content);
+            if (boosted != null && !boosted.startsWith("ERROR") && boosted.length() > content.length()) {
+                content = boosted.replaceAll("[#*\\-]", "");
+            }
+        }
+
+        // ===== STEP 2: 숏츠 대본 생성 (별도 호출, 간결) =====
+        String shortsTask = String.format("""
+            다음 글을 60초 숏츠 대본 4파트로 변환해.
+            제목: %s
+            내용요약: %s
+
+            말투: 커뮤니티 고인물 구어체. "와 님들 그거 암?", "이게 소름 돋는 게 뭐냐면" 스타일.
+            금지어: ㄹㅇ, 실화냐, 대박, 경악, ㄷㄷ, 헐
+            1.25x 속도 기준 분량.
+
+            출력형식(태그 필수):
+            [INTRO]
+            0-5초 후킹
+            [BODY_1]
+            5-25초 핵심팩트
+            [BODY_2]
+            25-45초 반전+댓글반응2개
+            [OUTRO]
+            45-60초 댓글유도 마무리
+            """, title, content.substring(0, Math.min(300, content.length())));
+
+        String rawShorts = aiService.askGpt("", "", shortsTask);
+
+        String intro, body1, body2, outro;
+        if (rawShorts != null && rawShorts.contains("[INTRO]") && rawShorts.contains("[BODY_1]")) {
+            intro = extract(rawShorts, "[INTRO]", "[BODY_1]").trim();
+            body1 = extract(rawShorts, "[BODY_1]", "[BODY_2]").trim();
+            body2 = extract(rawShorts, "[BODY_2]", "[OUTRO]").trim();
+            outro = extract(rawShorts, "[OUTRO]", null).trim();
+        } else {
+            // 자동 분절 fallback
+            log.warn("⚠️ 숏츠 태그 누락, 자동 분절 적용");
+            String fallback = rawShorts != null && !rawShorts.startsWith("ERROR") ? rawShorts : content;
+            intro = "와 님들, " + title + " 이거 좀 알아야 됨";
+            int len = fallback.length();
+            body1 = fallback.substring(0, Math.min(len / 2, 300));
+            body2 = fallback.substring(Math.min(len / 2, 300), Math.min(len, 600));
+            outro = "님들은 어떻게 생각함? 댓글로 알려줘. 구독 좋아요도 부탁!";
+        }
+
+        // 금지어 최종 정제
+        intro = cleanBannedPhrases(intro);
+        body1 = cleanBannedPhrases(body1);
+        body2 = cleanBannedPhrases(body2);
+        outro = cleanBannedPhrases(outro);
+
+        // JSON 빌드 (visual + audio 메타 포함)
+        String shortsScript = buildTimelineJson(intro, body1, body2, outro);
+
+        if (similarityService.isTooSimilar(title + " " + content)) {
+            log.warn("🔄 유사 게시글 존재: {}", topic.getTitle());
+            return null;
+        }
+
+        Board board = Board.builder()
+                .pId(writer.getPId())
+                .category(topic.getCategory())
+                .title(title.replaceAll("[#*]", ""))
+                .content(content.replaceAll("[#*\\-]", ""))
+                .shortsScript(shortsScript)
+                .writer(writer.getName())
+                .hit(random.nextInt(100))
+                .sourceUrl(topic.getLink())
+                .contentHash(topic.getContentHash())
+                .build();
+
+        Board saved = boardRepo.save(board);
+
+        // ===== PR-JUDGE: 2단계 게이트 (pre_score → judge_llm) =====
+        int preScore = calculatePreScore(saved, topic);
+        log.info("📊 pre_score={} (70 이상 → LLM 심사)", preScore);
+
+        if (preScore >= 70) {
+            JudgeResult judgeResult = judgeWithLLM(saved, preScore);
+
+            if ("PASS".equals(judgeResult.getVerdict())) {
+                String videoType = determineVideoType(topic.getCategory());
+                String riskFlagsJson = judgeResult.getRiskFlags() != null
+                    ? String.join(",", judgeResult.getRiskFlags()) : "";
+
+                String sql = """
+                    INSERT INTO shorts_queue
+                    (bno, status, video_type, quality_score, priority, reg_date,
+                     judge_verdict, judge_score, judge_angle, risk_flags)
+                    VALUES (?, 0, ?, 5.0, 5, SYSDATE, ?, ?, ?, ?)
+                    """;
+                jdbcTemplate.update(sql, saved.getBno(), videoType,
+                    judgeResult.getVerdict(), judgeResult.getScore(),
+                    judgeResult.getAngle(), riskFlagsJson);
+
+                log.info("✅ 심사 통과 (PASS): BNO={} | {} | 점수={} | 앵글={}",
+                    saved.getBno(), title, judgeResult.getScore(), judgeResult.getAngle());
+            } else {
+                log.warn("🚫 심사 탈락 ({}): BNO={} | 사유={}",
+                    judgeResult.getVerdict(), saved.getBno(), judgeResult.getReason());
+            }
+        } else {
+            log.warn("⚠️ pre_score 미달 ({}): BNO={} | shorts_queue 제외", preScore, saved.getBno());
+        }
+
+        return saved;
+    }
+
+    private String buildTimelineJson(String intro, String body1, String body2, String outro) {
+        return String.format(
+                "{\"timeline\":[" +
+                "{\"section\":\"intro\",\"start_sec\":0,\"end_sec\":5,\"text\":\"%s\"}," +
+                "{\"section\":\"body_1\",\"start_sec\":5,\"end_sec\":25,\"text\":\"%s\"}," +
+                "{\"section\":\"body_2\",\"start_sec\":25,\"end_sec\":45,\"text\":\"%s\"}," +
+                "{\"section\":\"outro\",\"start_sec\":45,\"end_sec\":60,\"text\":\"%s\"}" +
+                "]," +
+                "\"visual\":{\"theme\":\"dark_cinematic\",\"caption_highlight\":\"#FFD100\",\"caption_base\":\"#FFFFFF\",\"font\":\"Pretendard\",\"no_red_bg\":true}," +
+                "\"audio\":{\"voice_speed\":1.25,\"tone\":\"energetic\",\"avoid\":\"news_anchor_robotic\"}" +
+                "}",
+                escapeJson(intro), escapeJson(body1), escapeJson(body2), escapeJson(outro));
+    }
+
+    private boolean containsBannedPhrases(String text) {
+        if (text == null) return false;
+        String[] banned = {"ㄹㅇ", "실화냐", "실화임", "실화인", "대박", "경악", "ㄷㄷㄷ", "헐ㅋ"};
+        for (String b : banned) {
+            if (text.contains(b)) return true;
+        }
+        return false;
+    }
+
+    private String cleanBannedPhrases(String text) {
+        if (text == null) return "";
+        return text.replace("ㄹㅇ", "정말")
+                   .replace("실화냐", "사실인가")
+                   .replace("실화임", "사실임")
+                   .replace("실화인", "사실인")
+                   .replace("대박", "놀라운")
+                   .replace("경악", "충격적인")
+                   .replace("ㄷㄷㄷ", "")
+                   .replace("헐ㅋ", "")
+                   .replaceAll("[#*]", "");
+    }
+
+    private String determineVideoType(String category) {
+        if (category == null) return "INFO";
+        if (category.contains("연예") || category.contains("스포츠")) return "ENTERTAINMENT";
+        if (category.contains("테크") || category.contains("과학")) return "INFO";
+        if (category.contains("사회") || category.contains("트렌드")) return "TREND";
+        if (category.contains("커뮤니티") || category.contains("생활")) return "COMMUNITY";
+        return "INFO";
+    }
+
+    private String extract(String text, String start, String end) {
+        int s = text.indexOf(start);
+        if (s == -1) return "";
+        s += start.length();
+        if (end == null) return text.substring(s).trim();
+        int e = text.indexOf(end, s);
+        return (e == -1) ? text.substring(s).trim() : text.substring(s, e).trim();
+    }
+
+    private String escapeJson(String s) {
+        if (s == null) return "";
+        return s.replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "")
+                .replace("\t", "\\t");
+    }
+
+    // ===== PR-JUDGE: 감별사 AI =====
+
+    /**
+     * STEP 1: 규칙 기반 pre_score (0-100)
+     */
+    private int calculatePreScore(Board board, RawTopic topic) {
+        int score = 0;
+
+        // 1. 제목 품질 (0-20점)
+        String title = board.getTitle();
+        if (title != null) {
+            int titleLen = title.length();
+            if (titleLen >= 20 && titleLen <= 60) score += 15;
+            else if (titleLen >= 10) score += 10;
+
+            // 제목에 키워드 포함 시 가산
+            if (title.matches(".*[AI|테크|스타트업|오픈소스|개발자|프로그래머].*")) score += 5;
+        }
+
+        // 2. 본문 품질 (0-30점)
+        String content = board.getContent();
+        if (content != null) {
+            int contentLen = content.length();
+            if (contentLen >= 500) score += 20;
+            else if (contentLen >= 300) score += 15;
+            else if (contentLen >= 200) score += 10;
+
+            // 구체적 정보 포함 시 가산
+            if (content.contains("출처") || content.contains("링크") || content.contains("발표")) score += 5;
+            if (content.contains("CEO") || content.contains("공식") || content.contains("발표")) score += 5;
+        }
+
+        // 3. 출처 신뢰도 (0-20점)
+        String sourceUrl = board.getSourceUrl();
+        if (sourceUrl != null && !sourceUrl.isEmpty()) {
+            if (sourceUrl.contains("techcrunch") || sourceUrl.contains("venturebeat")
+                || sourceUrl.contains("theverge") || sourceUrl.contains("zdnet")) {
+                score += 20;
+            } else if (sourceUrl.contains("github") || sourceUrl.contains("medium")
+                || sourceUrl.contains("reddit")) {
+                score += 15;
+            } else {
+                score += 10;
+            }
+        }
+
+        // 4. 조회수 (0-10점)
+        int hit = board.getHit();
+        if (hit >= 50) score += 10;
+        else if (hit >= 20) score += 7;
+        else if (hit >= 10) score += 5;
+
+        // 5. 시의성 (0-10점)
+        LocalDateTime regDate = board.getRegdate();
+        if (regDate != null) {
+            Duration gap = Duration.between(regDate, LocalDateTime.now());
+            long hours = gap.toHours();
+            if (hours <= 24) score += 10;
+            else if (hours <= 72) score += 7;
+            else if (hours <= 168) score += 5;
+        } else {
+            score += 5; // 기본값
+        }
+
+        // 6. 카테고리 가중치 (0-10점)
+        String category = board.getCategory();
+        if (category != null) {
+            if (category.contains("테크") || category.contains("과학")) score += 10;
+            else if (category.contains("트렌드") || category.contains("사회")) score += 7;
+            else score += 5;
+        }
+
+        return Math.min(100, score);
+    }
+
+    /**
+     * STEP 2: LLM 기반 최종 심사 (pre_score >= 70)
+     */
+    private JudgeResult judgeWithLLM(Board board, int preScore) {
+        String judgePrompt = String.format("""
+            당신은 숏츠 콘텐츠 심사 전문가입니다.
+            다음 글이 '떡밥형 숏츠'로 적합한지 판단하세요.
+
+            제목: %s
+            본문: %s
+            출처: %s
+            pre_score: %d/100
+
+            판단 기준:
+            1. 논쟁 유발 가능성 (찬반 논란, 의견 대립 유도)
+            2. 댓글 유도 잠재력 (질문형, 공감형, 반박형)
+            3. 팩트 신뢰도 (출처 명확, 과장 없음)
+            4. 시청 흥미 (후킹, 반전, 궁금증)
+
+            위험 요소:
+            - clickbait: 낚시성 제목
+            - unverified: 출처 불명확
+            - controversial: 과도한 논쟁 유발
+            - outdated: 시의성 부족
+
+            출력 형식 (JSON):
+            {
+              "verdict": "PASS or HOLD or DROP",
+              "score": 0-10,
+              "angle": "논쟁유도형/정보제공형/팩트체크형/트렌드분석형",
+              "reason": "판정 근거 1-2문장",
+              "risk_flags": ["clickbait", "unverified"],
+              "must_include": ["출처언급", "반박근거"]
+            }
+
+            - PASS: 8-10점, 위험 요소 1개 이하
+            - HOLD: 6-7점, 수정 후 재심사 가능
+            - DROP: 0-5점, 부적합
+            """,
+            board.getTitle(),
+            board.getContent().substring(0, Math.min(500, board.getContent().length())),
+            board.getSourceUrl(),
+            preScore);
+
+        String rawResponse = aiService.askGpt("", "", judgePrompt);
+
+        try {
+            // JSON 파싱
+            String jsonStr = rawResponse;
+            if (rawResponse.contains("```json")) {
+                jsonStr = rawResponse.substring(
+                    rawResponse.indexOf("```json") + 7,
+                    rawResponse.lastIndexOf("```")
+                ).trim();
+            } else if (rawResponse.contains("{")) {
+                jsonStr = rawResponse.substring(
+                    rawResponse.indexOf("{"),
+                    rawResponse.lastIndexOf("}") + 1
+                ).trim();
+            }
+
+            JsonNode root = objectMapper.readTree(jsonStr);
+
+            String verdict = root.path("verdict").asText("DROP");
+            int score = root.path("score").asInt(0);
+            String angle = root.path("angle").asText("알 수 없음");
+            String reason = root.path("reason").asText("파싱 실패");
+
+            List<String> riskFlags = new ArrayList<>();
+            if (root.has("risk_flags") && root.get("risk_flags").isArray()) {
+                root.get("risk_flags").forEach(flag -> riskFlags.add(flag.asText()));
+            }
+
+            List<String> mustInclude = new ArrayList<>();
+            if (root.has("must_include") && root.get("must_include").isArray()) {
+                root.get("must_include").forEach(item -> mustInclude.add(item.asText()));
+            }
+
+            return JudgeResult.builder()
+                    .verdict(verdict)
+                    .score(score)
+                    .angle(angle)
+                    .reason(reason)
+                    .riskFlags(riskFlags)
+                    .mustInclude(mustInclude)
+                    .preScore(preScore)
+                    .build();
+
+        } catch (Exception e) {
+            log.error("❌ LLM 심사 응답 파싱 실패: {}", e.getMessage());
+            // fallback: DROP
+            return JudgeResult.builder()
+                    .verdict("DROP")
+                    .score(0)
+                    .angle("파싱오류")
+                    .reason("LLM 응답 파싱 실패: " + e.getMessage())
+                    .riskFlags(List.of("parse_error"))
+                    .mustInclude(List.of())
+                    .preScore(preScore)
+                    .build();
+        }
+    }
+}

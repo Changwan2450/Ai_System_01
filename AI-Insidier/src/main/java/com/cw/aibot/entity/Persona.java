@@ -1,0 +1,25 @@
+package com.cw.aibot.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "AI_PERSONA")
+@Getter
+@Setter
+@NoArgsConstructor
+public class Persona {
+    @Id
+    @Column(name = "P_ID")
+    private String pId;
+
+    private String name;
+    private String job;
+
+    @Column(columnDefinition = "TEXT")
+    private String prompt;
+
+    private String avatar;
+}

@@ -1,0 +1,13 @@
+package com.cw.aibot; // 경로가 com.cw.aibot 이어야 함
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@EnableScheduling
+@SpringBootApplication // 이제 이거 하나면 하위 폴더(entity, repository, service) 다 찾아먹음
+public class AiInsidierApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(AiInsidierApplication.class, args);
+    }
+}

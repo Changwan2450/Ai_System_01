@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI INSIDER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
+    <style>
+        body { background-color: #0b0c0d; font-family: 'Pretendard', sans-serif; color: #e9ecef; margin: 0; }
+        .navbar { background: #121315; border-bottom: 1px solid #2d2e32; padding: 12px 0; position: sticky; top: 0; z-index: 1000; }
+        .board-menu { display: flex; gap: 8px; margin: 20px 0; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .board-menu::-webkit-scrollbar { display: none; }
+        .menu-item { background: #1a1b1e; color: #adb5bd; padding: 8px 18px; border-radius: 50px; text-decoration: none; font-size: 0.85rem; border: 1px solid #2d2e32; white-space: nowrap; transition: 0.2s; }
+        .menu-item.active { background: #4dabf7 !important; color: #fff !important; border-color: #4dabf7 !important; font-weight: 700; }
+        .menu-item.best { border-color: #ff416c; color: #ff416c; }
+        .menu-item.best.active { background: #ff416c !important; color: #fff !important; }
+        .board-card { background: #121315; border: 1px solid #2d2e32; border-radius: 12px; overflow: hidden; margin-bottom: 50px; }
+
+        @media (min-width: 768px) {
+            .mobile-list { display: none; }
+            .table { margin-bottom: 0; color: #dee2e6 !important; }
+            .table th { background: #1a1b1e; color: #868e96; font-size: 0.75rem; padding: 15px; border-bottom: 1px solid #2d2e32 !important; text-align: center; }
+            .table td { border-bottom: 1px solid #1a1b1e; padding: 16px 15px; vertical-align: middle; background: transparent !important; cursor: pointer; }
+            tr:hover td { background: #1a1b1e !important; }
+            /* NO(1번), HITS(4번) 화이트 고정 */
+            .table td:nth-child(1), .table td:nth-child(4) { color: #ffffff !important; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+        }
+
+        /* ✅ 미세 조정: 주제는 살짝 줄이고, 제목은 살짝 키움 */
+        .cat-tag {
+            background: #1a1b1e;
+            color: #4dabf7;
+            padding: 5px 12px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.95rem; /* 1.05에서 0.95로 미세 하향 */
+            border: 1px solid #2d2e32;
+            white-space: nowrap;
+            display: inline-block;
+            margin-right: 12px;
+            font-weight: 700;
+        }
+        .subject-text {
+            font-size: 0.92rem; /* 0.85에서 0.92로 미세 상향 (주제보다 0.03 작음) */
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        .hot-tag { background: #ff416c; color: #fff; font-size: 0.65rem; padding: 2px 5px; border-radius: 4px; font-weight: 800; margin-right: 5px; }
+        .reply-count { color: #4dabf7; font-weight: 600; margin-left: 4px; font-size: 0.85rem; }
+        .writer-badge { background: #1a1b1e; color: #4dabf7 !important; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; border: 1px solid #2d2e32; white-space: nowrap; display: inline-block; }
+
+        @media (max-width: 767px) {
+            .desktop-table { display: none; }
+            .mobile-item { padding: 15px; border-bottom: 1px solid #2d2e32; display: block; text-decoration: none; color: inherit; }
+            .mobile-title { font-size: 1.1rem; font-weight: 700; line-height: 1.5; color: #fff; margin-bottom: 10px; display: block; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand text-white fw-bold" href="/board/list">AI INSIDER</a>
+        <div style="font-size: 0.7rem; color: #4dabf7; font-weight: 800;">● SYSTEM ONLINE</div>
+    </div>
+</nav>
+
+<div class="container" style="max-width: 1050px;">
+    <div class="board-menu">
+        <a href="/board/list?sort=best" class="menu-item best" th:classappend="${sort == 'best'} ? 'active'">🔥 BEST</a>
+        <a href="/board/list" class="menu-item" th:classappend="${category == null and sort == null} ? 'active'">전체</a>
+        <a href="/board/list?category=AI_테크_인사이트" class="menu-item" th:classappend="${category == 'AI_테크_인사이트'} ? 'active'">TECH</a>
+        <a href="/board/list?category=차세대_AI_전망" class="menu-item" th:classappend="${category == '차세대_AI_전망'} ? 'active'">FUTURE</a>
+        <a href="/board/list?category=하드웨어_인프라" class="menu-item" th:classappend="${category == '하드웨어_인프라'} ? 'active'">INFRA</a>
+    </div>
+
+    <div class="board-card">
+        <div class="desktop-table">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th style="width: 70px;">NO</th>
+                    <th class="text-start">SUBJECT</th>
+                    <th style="width: 150px;">WRITER</th>
+                    <th style="width: 80px;">HITS</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${list}" th:onclick="|location.href='/board/detail/' + ${board.bno}|">
+                    <td class="text-center" th:text="${board.bno}"></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <span class="cat-tag" th:text="${board.category != null ? board.category : '일반'}"></span>
+                            <span th:if="${board.hit >= 80}" class="hot-tag">HOT</span>
+                            <span class="subject-text" th:text="${board.title}"></span>
+                            <span class="reply-count" th:if="${board.replies != null and board.replies.size() > 0}"
+                                  th:text="'[' + ${board.replies.size()} + ']'"></span>
+                        </div>
+                    </td>
+                    <td class="text-center"><span class="writer-badge" th:text="${board.writer}"></span></td>
+                    <td class="text-center" th:text="${board.hit}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mobile-list">
+            <a th:each="board : ${list}" th:href="@{'/board/detail/' + ${board.bno}}" class="mobile-item">
+                <div class="mobile-info d-flex justify-content-between text-muted small mb-3">
+                    <span style="color: #fff; font-weight: 700;" th:text="'#' + ${board.bno}"></span>
+                    <span th:text="${#temporals.format(board.regdate, 'MM/dd HH:mm')}"></span>
+                </div>
+                <div class="mobile-title">
+                    <span class="cat-tag" style="font-size: 0.9rem;" th:text="${board.category != null ? board.category : '일반'}"></span>
+                    <span style="font-size: 1rem; font-weight: 600;" th:text="${board.title}"></span>
+                </div>
+                <div class="mobile-meta d-flex justify-content-between align-items-center mt-3">
+                    <span class="writer-badge" th:text="${board.writer}"></span>
+                    <span style="color: #fff; font-weight: 700;">조회 <th:block th:text="${board.hit}"></th:block></span>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
